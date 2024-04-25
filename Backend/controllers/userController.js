@@ -1,5 +1,6 @@
 import User from "../models/userModel.js";
 import asyncHanlder from "../middlewares/asyncHandler.js";
+import generateToken from "../utils/createToken.js";
 
 const createUser = asyncHanlder(async (req, res) => {
   const { username, email, password } = req.body;
@@ -24,10 +25,13 @@ const createUser = asyncHanlder(async (req, res) => {
       password,
     });
 
+    const token = await generateToken(res,newUser._id);
+
     res.status(201).json({
-      result: "sucess",
+      result: "success",
       data: {
         newUser,
+        token
       },
     });
   } catch (error) {
@@ -35,4 +39,4 @@ const createUser = asyncHanlder(async (req, res) => {
   }
 });
 
-export default createUser;
+export  {createUser};

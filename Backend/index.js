@@ -25,6 +25,6 @@ app.use(morgan("dev"))
 
 console.log(process.env.NODE_ENV)
 
-app.use("/ecommerce/api/v1/user",userRoutes)
+app.use("/ecommerce/api/users",userRoutes)
 
 app.listen(port, () => console.log(`Server running on port: ${port}`));
