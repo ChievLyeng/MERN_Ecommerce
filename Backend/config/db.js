@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
-
 const connectDB = async () => {
+  console.log(process.env.NODE_ENV);
   try {
-    await mongoose.connect(`mongodb+srv://lyengChiev:Lyeng12345@mernapp.q1anbjw.mongodb.net/Ecommerce?retryWrites=true&w=majority`);
+    await mongoose.connect(process.env.MONGO_URI);
     console.log(`Successfully connnected to mongoDB 👍`);
   } catch (error) {
     console.error(`ERROR: ${error.message}`);

@@ -8,7 +8,7 @@ import userRoutes from "./routes/userRoute.js"
 import morgan from "morgan"
 dotenv.config();
 
-const port = 3000;
+const port = process.env.PORT || 5000;
 
 connectDB();
 
@@ -23,6 +23,7 @@ app.use(cookieParser());
 // http request logger
 app.use(morgan("dev"))
 
+console.log(process.env.NODE_ENV)
 
 app.use("/ecommerce/api/v1/user",userRoutes)
 
