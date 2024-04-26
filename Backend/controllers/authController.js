@@ -25,6 +25,10 @@ const loginUser = asyncHanlder(async (req, res) => {
       });
 
       return;
+    } else {
+      res.status(400).json({
+        message: "Incorrect password or username !",
+      });
     }
   }
 });
@@ -39,5 +43,7 @@ const logoutCurrentUser = asyncHanlder(async (req, res) => {
     message: "Logged out successfully!",
   });
 });
+
+
 
 export { loginUser, logoutCurrentUser };
