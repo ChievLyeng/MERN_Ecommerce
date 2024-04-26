@@ -29,4 +29,15 @@ const loginUser = asyncHanlder(async (req, res) => {
   }
 });
 
-export { loginUser };
+const logoutCurrentUser = asyncHanlder(async (req, res) => {
+  res.cookie("jwt", "", {
+    httpOnly: true,
+    expires: new Date(0),
+  });
+
+  res.status(200).json({
+    message: "Logged out successfully!",
+  });
+});
+
+export { loginUser, logoutCurrentUser };
