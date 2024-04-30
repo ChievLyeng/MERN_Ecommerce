@@ -10,8 +10,13 @@ import {
 import { FaHeart } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useNavigation } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { useLoginMutation } from "../../redux/api/userApiSlice";
+import { logout } from "../../redux/features/auth/authSlice";
 
 export const Navigation = () => {
+  const { userInfo } = useSelector((state) => state.auth);
+
   const [dropdownOpen, setDropDownOpen] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
 
@@ -25,6 +30,20 @@ export const Navigation = () => {
 
   const closeSidebar = () => {
     setShowSidebar(false);
+  };
+
+  const dispatch = useDispatch();
+  const navigate = useNavigation();
+
+  const [logoutApiCall] = useLoginMutation();
+
+  const logoutHandler = async () => {
+    try {
+      await logoutApiCall().unwrap();
+      navigate("/login");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -76,6 +95,19 @@ export const Navigation = () => {
           {""}
         </Link>
       </div>
+      <div className="relative">
+        <button
+          onClick={toggleDropdown}
+          className="flex items-center text-gray-8000 foucs:outline-none"
+        >
+          {userInfo ? (
+            <span className="text-white">{userInfo.username}</span>
+          ) : (
+            <></>
+          )}
+        </button>
+      </div>
+
       <ul>
         <li>
           {/* Login */}
