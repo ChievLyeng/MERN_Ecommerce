@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../../redux/api/userApiSlice";
 import { setCredentials } from "../../redux/features/auth/authSlice";
 import { toast } from "react-toastify";
@@ -19,7 +20,7 @@ export const Login = () => {
 
   const { search } = useLocation();
   const sp = new URLSearchParams(search);
-  const redirect = sp.get("redirect" || "/");
+  const redirect = sp.get("redirect") || "/";
 
   useEffect(() => {
     if (userInfo) {
@@ -27,12 +28,26 @@ export const Login = () => {
     }
   }, [navigate, redirect, userInfo]);
 
+  const submitHandler = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await login({ email, password }).unwrap();
+      console.log(res);
+      dispatch(setCredentials({ ...res }));
+      navigate(redirect);
+    } catch (error) {
+      console.log(error);
+      toast.error(error.data.message);
+    }
+  };
+
   return (
     <div>
       <section className="pl-[10rem] flex flex-wrap">
         <div className="mr-[4rem] mt-[5rem]">
           <h1 className="text-2xl font-semibold mb-4">Sign In</h1>
-          <form className="container w-[40rem]">
+          <form onSubmit={submitHandler} className="container w-[40rem]">
             <div className="my-[2rem]">
               <label
                 htmlFor="email"
@@ -73,7 +88,20 @@ export const Login = () => {
 
             {isLoading && <Loader />}
           </form>
+
+          <div className="mt-4">
+            <p className="text-white">
+              New Customer ?{" "}
+              <Link
+                to={redirect ? `/register?redirect=${redirect}` : `/register`}
+                className="text-pink-500 hover:underline"
+              >
+                Register
+              </Link>
+            </p>
+          </div>
         </div>
+        
       </section>
     </div>
   );

@@ -4,7 +4,9 @@ import generateToken from "../utils/createToken.js";
 import bcrypt from "bcryptjs";
 
 const loginUser = asyncHanlder(async (req, res) => {
+  console.log(req.body)
   const { email, password } = req.body;
+  
 
   const existingUser = await User.findOne({ email });
 
