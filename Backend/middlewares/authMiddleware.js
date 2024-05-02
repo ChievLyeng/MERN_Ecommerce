@@ -7,16 +7,18 @@ const authenticate = asyncHanlder(async (req, res, next) => {
 
   //read jwt from 'jwt' cookie
   token = req.cookies.jwt;
+  console.log("cookie", req.cookies);
+  console.log("req user", req.user);
+  console.log("token", token);
 
   if (token) {
     try {
-
-    //decoded jwt to payload form
+      //decoded jwt to payload form
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      
+
       //find user with decoded token by userId
       req.user = await User.findById(decoded.userId).select("-password");
-      
+
       next();
     } catch (error) {
       res.status(401).json({
@@ -32,6 +34,7 @@ const authenticate = asyncHanlder(async (req, res, next) => {
 });
 
 const authorizedAdmin = (req, res, next) => {
+  console.log(req.user);
   if (req.user && req.user.isAdmin) {
     next();
   } else {

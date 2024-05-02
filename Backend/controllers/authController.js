@@ -4,9 +4,8 @@ import generateToken from "../utils/createToken.js";
 import bcrypt from "bcryptjs";
 
 const loginUser = asyncHanlder(async (req, res) => {
-  console.log(req.body)
+  console.log(req.body);
   const { email, password } = req.body;
-  
 
   const existingUser = await User.findOne({ email });
 
@@ -25,7 +24,7 @@ const loginUser = asyncHanlder(async (req, res) => {
         email: existingUser.email,
         isAdmin: existingUser.isAdmin,
       });
-
+      console.log(req.User);
       return;
     } else {
       res.status(400).json({
@@ -36,16 +35,16 @@ const loginUser = asyncHanlder(async (req, res) => {
 });
 
 const logoutCurrentUser = asyncHanlder(async (req, res) => {
-  res.cookie("jwt", "", {
-    httpOnly: true,
-    expires: new Date(0),
-  });
+  // res.cookie("jwt", "", {
+  //   httpOnly: true,
+  //   expires: new Date(0),
+  // });
+  //clear cookie when logout
+  res.clearCookie("jwt");
 
   res.status(200).json({
     message: "Logged out successfully!",
   });
 });
-
-
 
 export { loginUser, logoutCurrentUser };

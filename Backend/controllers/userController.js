@@ -73,17 +73,18 @@ const getCurrentUser = asyncHanlder(async (req, res) => {
 });
 
 const updateCurrentUser = asyncHanlder(async (req, res) => {
+  console.log(req.body);
   const user = await User.findById(req.user.id);
-
+  console.log(user.password);
   if (user) {
-    (user.username = req.body.username || user.username),
-      (user.email = req.body.email || user.email);
+    user.username = req.body.username || user.username;
+    user.email = req.body.email || user.email;
 
     if (req.body.password) {
       user.password = req.body.password;
     }
-
     const updatedUser = await user.save();
+
 
     res.status(200).json({
       result: "data updated",
