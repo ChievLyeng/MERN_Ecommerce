@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import cookieParser from "cookie-parser";
 import userRoutes from "./routes/userRoute.js";
+import categoryRoutes from "./routes/categoryRoute.js";
 import morgan from "morgan";
 import cors from "cors";
 dotenv.config();
@@ -34,5 +35,6 @@ app.use(morgan("dev"));
 console.log(process.env.NODE_ENV);
 
 app.use("/ecommerce/api/users", userRoutes);
+app.use("/ecommerce/api/category", categoryRoutes);
 
 app.listen(port, () => console.log(`Server running on port: ${port}`));
