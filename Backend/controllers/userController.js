@@ -45,9 +45,7 @@ const getAllUser = asyncHanlder(async (req, res) => {
 
   res.status(200).json({
     result: "success",
-    data: {
-      allUser,
-    },
+    allUser,
   });
 });
 
@@ -84,7 +82,6 @@ const updateCurrentUser = asyncHanlder(async (req, res) => {
       user.password = req.body.password;
     }
     const updatedUser = await user.save();
-
 
     res.status(200).json({
       result: "data updated",
@@ -147,7 +144,7 @@ const updateUserById = asyncHanlder(async (req, res) => {
   if (user) {
     (user.username = req.body.username || user.username),
       (user.email = req.body.email || user.email),
-      (user.isAdmin = Boolean(req.body.isAdmin));
+      (user.isAdmin = false ? user.isAdmin == "undefined" || "" : user.isAdmin);
 
     const updatedUser = await user.save();
 

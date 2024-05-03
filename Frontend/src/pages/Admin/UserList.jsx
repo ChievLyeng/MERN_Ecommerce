@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 import { FaTrash, FaEdit, FaCheck, FaTimes } from "react-icons/fa";
 import Message from "../../components/Message";
 import { Loader } from "../../components/Loader";
@@ -8,15 +9,22 @@ import {
   useUpdateUserMutation,
 } from "../../redux/api/userApiSlice";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
 export const UserList = () => {
-  const { data: users, refetch, isLoading, error } = useGetUsersQuery();
+  const { userInfo } = useSelector((state) => state.auth);
+  const token = userInfo.token;
+  const { data: users, refetch, isLoading, error } = useGetUsersQuery(token);
   const [deleteUser] = useDeleteUserMutation();
   const [updateUser] = useUpdateUserMutation();
 
   const [editableUserId, setEditableUserId] = useState(null);
   const [editableUserName, setEditableUserName] = useState("");
   const [editableUserEmail, setEditableUserEmail] = useState("");
+
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   const deleteHandler = async (id) => {
     if (window.confirm("Are you sure")) {
@@ -38,6 +46,7 @@ export const UserList = () => {
   const updateHandler = async (id) => {
     try {
       await updateUser({
+        token,
         userId: id,
         username: editableUserName,
         email: editableUserEmail,
@@ -49,11 +58,9 @@ export const UserList = () => {
     }
   };
 
-  useEffect(() => {}, [refetch]);
-
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-semibold mb-4">Users</h1>
+      <h1 className="text-2xl font-semibold mb-4 md:ml-36">Users</h1>
       {isLoading ? (
         <Loader />
       ) : error ? (
@@ -63,6 +70,7 @@ export const UserList = () => {
       ) : (
         <div className="flex flex-col md:flex-row">
           {/* <AdminMenu /> */}
+
           <table className="w-full md:w-4/5 mx-auto">
             <thead>
               <tr>
@@ -74,7 +82,7 @@ export const UserList = () => {
               </tr>
             </thead>
             <tbody>
-              {users.map((user) => (
+              {users?.allUser.map((user) => (
                 <tr key={user._id}>
                   <td className="px-4 py-2">{user._id}</td>
                   <td className="px-4 py-2">

@@ -16,15 +16,16 @@ const loginUser = asyncHanlder(async (req, res) => {
     );
 
     if (isPasswordValid) {
-      generateToken(res, existingUser._id);
+      const token = await generateToken(res, existingUser._id);
 
       res.status(201).json({
         id: existingUser._id,
         username: existingUser.username,
         email: existingUser.email,
         isAdmin: existingUser.isAdmin,
+        token
       });
-      console.log(req.User);
+   
       return;
     } else {
       res.status(400).json({
