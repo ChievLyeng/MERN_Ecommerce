@@ -43,4 +43,55 @@ const updateCategory = asyncHanlder(async (req, res) => {
   }
 });
 
-export { createCategory,updateCategory };
+const deleteCategory = asyncHanlder(async (req, res) => {
+  try {
+    const { id } = req.params;
+    const Category = await category.findByIdAndDelete({ _id: id });
+
+    if (!Category) {
+      res.status(404).json({ message: "Category not found!" });
+    }
+
+    res.status(200).json({ message: "Category has been delete.", Category });
+  } catch (error) {
+    res.status(400).json({ error });
+  }
+});
+
+const getAllCategories = asyncHanlder(async (req, res) => {
+  try {
+    const Categories = await category.find({});
+
+    res.status(200).json({
+      result: Categories.length,
+      data: Categories,
+    });
+  } catch (error) {
+    res.status(400).json({ error });
+  }
+});
+
+const getCategoryById = asyncHanlder(async (req, res) => {
+  try {
+    const { id } = req.params;
+    const Category = await category.findById({ _id: id });
+
+    if (!Category) {
+      res.status(404).json({ message: "Category not found!" });
+    }
+
+    res.status(200).json({
+      data: Category,
+    });
+  } catch (error) {
+    res.status(400).json({ error });
+  }
+});
+
+export {
+  createCategory,
+  updateCategory,
+  deleteCategory,
+  getAllCategories,
+  getCategoryById,
+};
