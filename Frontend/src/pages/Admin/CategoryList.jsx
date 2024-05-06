@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import {
   useGetCategoriesQuery,
@@ -15,7 +15,7 @@ export const CategoryList = () => {
   const [updatingName, setUpdatingName] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
 
-  const { data: categories } = useGetCategoriesQuery();
+  const { data: categories, refetch } = useGetCategoriesQuery();
   const [createCategory] = useCreateCategoryMutation();
   const [updateCategory] = useUpdateCategoryMutation();
   const [deleteCategory] = useDeleteCategoryMutation();
@@ -34,6 +34,7 @@ export const CategoryList = () => {
       } else {
         setName("");
         toast.success(`${result.data.name} is created.`);
+        refetch();
       }
     } catch (error) {
       console.error(error);
@@ -42,13 +43,14 @@ export const CategoryList = () => {
   };
 
   const handleUpdateCategory = async (e) => {
+    console.log("handle update");
     e.preventDefault();
-    if (!name) {
+    if (!updatingName) {
       toast.error("Category name is required");
       return;
     }
     try {
-      const result = await updatCategory({
+      const result = await updateCategory({
         data: {
           name: updatingName,
         },
@@ -58,7 +60,8 @@ export const CategoryList = () => {
       if (result.error) {
         toast.error(result.error);
       } else {
-        toast.success(`${result.name} is updated!`);
+        toast.success(`${result.data.name} is updated!`);
+        refetch();
         setSelectedCategory(null);
         setUpdatingName("");
         setModalVisible(false);
@@ -68,7 +71,27 @@ export const CategoryList = () => {
     }
   };
 
-  const handleDelteCategory = async () => {};
+  const handleDeleteCategory = async () => {
+    console.log("handle Delete");
+    try {
+      const result = await deleteCategory(selectedCategory._id).unwrap();
+
+      if (result.error) {
+        toast.error(result.error);
+      } else {
+        toast.success(`${result?.data.name} is deleted!`);
+        setSelectedCategory(null);
+        setModalVisible(false);
+        refetch();
+      }
+    } catch (error) {
+      toast.error("Delete Category failed! try again.");
+    }
+  };
+
+  // useEffect(() => {
+  //   refetch();
+  // }, [refetch]);
 
   return (
     <div className="ml-[10rem] flex flex-col md:flex-row">
@@ -104,9 +127,9 @@ export const CategoryList = () => {
           <CategoryForm
             value={updatingName}
             setValue={(value) => setUpdatingName(value)}
-            // handleSubmit={handleUpdateCategory}
+            handleSubmit={handleUpdateCategory}
             buttonText="Update"
-            // handleDelete={handleDeleteCategory}
+            handleDelete={handleDeleteCategory}
           />
         </Modal>
       </div>

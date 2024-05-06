@@ -52,7 +52,8 @@ const deleteCategory = asyncHanlder(async (req, res) => {
       res.status(404).json({ message: "Category not found!" });
     }
 
-    res.status(200).json({ message: "Category has been delete.", Category });
+
+    res.status(200).json({ message: "Category has been delete.", data:Category });
   } catch (error) {
     res.status(400).json({ error });
   }
