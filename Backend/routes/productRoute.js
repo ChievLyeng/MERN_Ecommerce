@@ -4,11 +4,14 @@ import { authenticate, authorizeAdmin } from "../middlewares/authMiddleware.js";
 import formidable from "express-formidable";
 import {
   createProduct,
+  createProductReview,
   deleteProduct,
   getProducts,
   updateProduct,
   getProductById,
   getAllProducts,
+  getNewProduct,
+  getTopProduct,
 } from "../controllers/productController.js";
 
 const router = express.Router();
@@ -19,6 +22,10 @@ router
   .post(authenticate, authorizeAdmin, formidable(), createProduct);
 
 router.get("/allProducts", getAllProducts);
+router.get("/new", getNewProduct);
+router.get("/top", getTopProduct);
+
+router.route("/review/:id").post(authenticate, createProductReview);
 
 router
   .route("/:id")

@@ -119,11 +119,83 @@ const getAllProducts = asyncHanlder(async (req, res) => {
   res.status(200).json({ data: products });
 });
 
+const createProductReview = asyncHanlder(async (req, res) => {
+  try {
+    console.log(req.params.id);
+    const { rating, comment } = req.body;
+    const product = await Product.findById(req.params.id);
+    console.log(product);
+
+    if (product) {
+      // find product has reviewed
+      const alreadyReviewed = product.reviews.find(
+        (r) => r.user.toString() === req.user._id.toString()
+      );
+
+      //check if product already review
+      if (alreadyReviewed) {
+        res.status(400).json({ message: "Product already reviewed." });
+      }
+    }
+
+    // create review
+    const review = {
+      name: req.user.username,
+      rating: Number(rating),
+      comment,
+      user: req.user._id,
+    };
+
+    product.reviews.push(review);
+
+    // assign number of review equal to length of reviews schema
+    product.numReviews = product.reviews.length;
+
+    // calculate rating by each rating of review
+    product.rating =
+      product.reviews.reduce((acc, item) => item.rating + acc, 0) /
+      product.reviews.length;
+
+    await product.save();
+    res.status(200).json({
+      message: "Review Added!",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal Error", error });
+  }
+});
+
+const getTopProduct = asyncHanlder(async (req, res) => {
+  try {
+    const topProduct = await Product.find({}).sort({ rating: -1 }).limit(5);
+
+    res.status(200).json({ data: topProduct });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+const getNewProduct = asyncHanlder(async (req, res) => {
+  try {
+    const newestProduct = await Product.find().sort({ _id: -1 }).limit(5);
+
+    res.status(200).json({ data: newestProduct });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 export {
   createProduct,
+  createProductReview,
   updateProduct,
   deleteProduct,
   getProducts,
   getProductById,
-  getAllProducts
+  getAllProducts,
+  getNewProduct,
+  getTopProduct,
 };
