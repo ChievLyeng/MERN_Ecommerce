@@ -16,7 +16,6 @@ import { logout } from "../../redux/features/auth/authSlice";
 
 export const Navigation = () => {
   const { userInfo } = useSelector((state) => state.auth);
-  console.log(userInfo)
 
   const [dropdownOpen, setDropDownOpen] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);

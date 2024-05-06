@@ -42,7 +42,6 @@ export const UserList = () => {
     setEditableUserName(username);
     setEditableUserEmail(email);
   };
-
   const updateHandler = async (id) => {
     try {
       await updateUser({
