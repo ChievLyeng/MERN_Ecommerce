@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import userRoutes from "./routes/userRoute.js";
 import categoryRoutes from "./routes/categoryRoute.js";
 import { productRoutes } from "./routes/productRoute.js";
+import uploadRoutes from "./routes/uploadRoute.js";
 import morgan from "morgan";
 import cors from "cors";
 dotenv.config();
@@ -38,5 +39,9 @@ console.log(process.env.NODE_ENV);
 app.use("/ecommerce/api/users", userRoutes);
 app.use("/ecommerce/api/category", categoryRoutes);
 app.use("/ecommerce/api/product", productRoutes);
+app.use("/ecommerce/api/upload", uploadRoutes);
+
+const __dirname = path.resolve();
+app.use("/uploads", express.static(path.join(__dirname + "/uploads")));
 
 app.listen(port, () => console.log(`Server running on port: ${port}`));
