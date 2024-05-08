@@ -7,7 +7,7 @@ import {
 } from "../../redux/api/productApiSlice";
 import { useGetCategoriesQuery } from "../../redux/api/categoryApiSlice";
 import { toast } from "react-toastify";
-import Img from "../../../../Backend/uploads/image-1715156092549.jpg";
+import AdminMenu from "./AdminMenu";
 
 export const ProductList = () => {
   const [image, setImage] = useState("");
@@ -25,8 +25,6 @@ export const ProductList = () => {
   const [createProduct] = useCreateProductMutation();
   const { data: categories } = useGetCategoriesQuery();
 
-  console.log(imageUrl);
-
   const handleFileUpload = async (e) => {
     const formData = new FormData();
     formData.append("image", e.target.files[0]);
@@ -35,33 +33,46 @@ export const ProductList = () => {
       console.log(res);
       toast.success(res.message);
       setImage(res?.image);
-      setImageUrl(`../../../..${res?.image}`);
+      setImageUrl(`${res?.image.replace(/\\/g, "/")}`);
     } catch (error) {
       toast.error(error?.data?.message || error.error);
     }
   };
-  console.log(imageUrl);
+  console.log("first", imageUrl);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const validateData =
+      !name ||
+      !description ||
+      !price ||
+      !quantity ||
+      !imageUrl ||
+      !brand ||
+      !category;
+
     try {
-      const productData = new FormData();
-      productData.append("image", image);
-      productData.append("name", name);
-      productData.append("description", description);
-      productData.append("price", price);
-      productData.append("category", category);
-      productData.append("quantity", quantity);
-      productData.append("brand", brand);
-      productData.append("countInStock", stock);
+      if (!validateData) {
+        const productData = new FormData();
+        productData.append("image", image);
+        productData.append("name", name);
+        productData.append("description", description);
+        productData.append("price", price);
+        productData.append("category", category);
+        productData.append("quantity", quantity);
+        productData.append("brand", brand);
+        productData.append("countInStock", stock);
 
-      const { data } = await createProduct(productData);
-
-      if (data.error) {
-        toast.error("Product create failed. Try Again.");
+        const { data } = await createProduct(productData);
+        if (data.error) {
+          toast.error("Product create failed. Try Again.");
+        } else {
+          toast.success(`${data?.data?.name} is created`);
+          navigate("/");
+        }
       } else {
-        toast.success(`${data.name} is created`);
-        navigate("/");
+        toast.error("All fields are required!");
       }
     } catch (error) {
       toast.error(error?.data?.message || error.error);
@@ -70,8 +81,10 @@ export const ProductList = () => {
 
   return (
     <div className="container xl:mx-[9rem] sm:mx-[0]">
+      <img src={imageUrl} alt="" />
       <div className="flex  flex-col md:flex-row">
         {/* AdminMenu */}
+        <AdminMenu />
         <div className="md:w-3/4 p-3">
           <div className="h-12">Create Product</div>
           {imageUrl && (

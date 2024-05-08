@@ -4,6 +4,8 @@ import { Product } from "../models/productModel.js";
 const createProduct = asyncHanlder(async (req, res) => {
   try {
     const { name, description, price, category, quantity, brand } = req.fields;
+    console.log(req.fields);
+    console.log({ name, description, price, category, quantity, brand });
     switch (true) {
       case !name:
         return res.json({ message: "Name is required!" });
