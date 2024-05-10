@@ -32,7 +32,7 @@ const createProduct = asyncHanlder(async (req, res) => {
 const updateProduct = asyncHanlder(async (req, res) => {
   try {
     const { name, description, price, category, quantity, brand } = req.fields;
-
+    console.log(req.fields);
     // Validation
     switch (true) {
       case !name:
@@ -66,7 +66,9 @@ const updateProduct = asyncHanlder(async (req, res) => {
 
 const deleteProduct = asyncHanlder(async (req, res) => {
   try {
+    console.log(req.params.id);
     const product = await Product.findByIdAndDelete(req.params.id);
+    console.log(product);
     res.status(200).json({ data: product });
   } catch (error) {
     console.error(error);

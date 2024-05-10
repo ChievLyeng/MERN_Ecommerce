@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import {
   useCreateProductMutation,
-  useUpdateProductMutation,
   useUploadProductImageMutation,
 } from "../../redux/api/productApiSlice";
 import { useGetCategoriesQuery } from "../../redux/api/categoryApiSlice";
@@ -30,16 +29,16 @@ export const ProductList = () => {
     formData.append("image", e.target.files[0]);
     try {
       const res = await uploadProductImage(formData).unwrap();
-      console.log(res);
       toast.success(res.message);
       setImage(res?.image);
-      setImageUrl(`${res?.image.replace(/\\/g, "/")}`);
+      // setImageUrl(`../../../..${res?.image.replace(/\\/g, "/")}`);
+      setImageUrl(res?.image);
     } catch (error) {
       toast.error(error?.data?.message || error.error);
     }
   };
-  console.log("first", imageUrl);
 
+  console.log("first", imageUrl);
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -81,7 +80,6 @@ export const ProductList = () => {
 
   return (
     <div className="container xl:mx-[9rem] sm:mx-[0]">
-      <img src={imageUrl} alt="" />
       <div className="flex  flex-col md:flex-row">
         {/* AdminMenu */}
         <AdminMenu />
@@ -91,7 +89,7 @@ export const ProductList = () => {
             <div className="text-center">
               <img
                 src={imageUrl}
-                alt="product"
+                alt="product Image"
                 className="block mx-auto max-h-[200px]"
               />
             </div>

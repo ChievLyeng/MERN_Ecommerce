@@ -7,7 +7,7 @@ const router = express.Router();
 const storage = multer.diskStorage({
   // file destination
   destination: (req, file, cb) => {
-    cb(null, "Backend/uploads/");
+    cb(null, "uploads/");
   },
   
   // get original file name that upload
