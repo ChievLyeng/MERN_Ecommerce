@@ -13,8 +13,8 @@ export const SmallProduct = ({ product }) => {
 
         <div className="p-54">
           <Link to={`product/${product._id}`}>
-            <h2 className="flex justify-between items-center">
-              <div>
+            <h2>
+              <div className="flex justify-between items-center mt-4">
                 {product.name}
                 <span className="bg-pink-100 text-pink-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded-full dark:pg-pink-900 dark:text-pink-300">
                   $ {product.price}

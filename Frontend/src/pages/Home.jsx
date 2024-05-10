@@ -9,7 +9,7 @@ export const Home = () => {
   const { keyword } = useParams();
   console.log("key", keyword);
   const { data, isLoading, isError } = useGetProductsQuery({ keyword });
-  console.log("ddd", data);
+  console.log("id",isError);
   return (
     <>
       <div>
@@ -18,7 +18,7 @@ export const Home = () => {
           <Loader />
         ) : isError ? (
           <Message variant="danger">
-            {isError?.data.message || isError.isError}
+            {isError?.data?.message || isError.isError}
           </Message>
         ) : (
           <>
@@ -35,7 +35,7 @@ export const Home = () => {
             </div>
             <div>
               <div className="flex justify-center flex-wrap mt-[2rem]">
-                {data?.data.map((product) => (
+                {data?.data?.map((product) => (
                   <div key={product._id}>
                     <Product product={product} />
                   </div>
