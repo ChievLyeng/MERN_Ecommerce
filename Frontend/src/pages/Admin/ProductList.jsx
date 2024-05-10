@@ -82,8 +82,6 @@ export const ProductList = () => {
 
   return (
     <div className="container xl:mx-[9rem] sm:mx-[0]">
-      <img src={"/uploads/image-1715329970427.jpg"} alt="saa" />
-
       <div className="flex  flex-col md:flex-row">
         {/* AdminMenu */}
         <AdminMenu />
