@@ -11,7 +11,7 @@ export const productApiSlice = apiSlice.injectEndpoints({
     }),
     getProducts: builder.query({
       query: ({ keyword }) => ({
-        url: `${PRODUCT_URL}/product`,
+        url: `${PRODUCT_URL}`,
         method: "GET",
         params: { keyword },
       }),
@@ -29,14 +29,14 @@ export const productApiSlice = apiSlice.injectEndpoints({
     }),
     getTopProduct: builder.query({
       query: () => ({
-        url: `${PRODUCT_URL}/product/top`,
+        url: `${PRODUCT_URL}/top`,
         method: "GET",
       }),
       keepUnusedDataFor: 5,
     }),
     getNewProduct: builder.query({
       query: () => ({
-        url: `${PRODUCT_URL}/product/new`,
+        url: `${PRODUCT_URL}/new`,
         method: "GET",
       }),
       keepUnusedDataFor: 5,

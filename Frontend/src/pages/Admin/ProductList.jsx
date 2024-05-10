@@ -7,6 +7,7 @@ import {
 import { useGetCategoriesQuery } from "../../redux/api/categoryApiSlice";
 import { toast } from "react-toastify";
 import AdminMenu from "./AdminMenu";
+// import Img from "uploads\image-1715244328542.jpg"
 
 export const ProductList = () => {
   const [image, setImage] = useState("");
@@ -30,7 +31,7 @@ export const ProductList = () => {
     try {
       const res = await uploadProductImage(formData).unwrap();
       toast.success(res.message);
-      setImage(res?.image);
+      setImage(`${res?.image}`);
       // setImageUrl(`../../../..${res?.image.replace(/\\/g, "/")}`);
       setImageUrl(res?.image);
     } catch (error) {
@@ -39,6 +40,7 @@ export const ProductList = () => {
   };
 
   console.log("first", imageUrl);
+  console.log(typeof imageUrl);
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -80,6 +82,8 @@ export const ProductList = () => {
 
   return (
     <div className="container xl:mx-[9rem] sm:mx-[0]">
+      <img src={"/uploads/image-1715329970427.jpg"} alt="saa" />
+
       <div className="flex  flex-col md:flex-row">
         {/* AdminMenu */}
         <AdminMenu />

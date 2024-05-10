@@ -10,6 +10,7 @@ import {
 } from "../../redux/api/userApiSlice";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
+import AdminMenu from "./AdminMenu";
 
 export const UserList = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -69,7 +70,7 @@ export const UserList = () => {
       ) : (
         <div className="flex flex-col md:flex-row">
           {/* <AdminMenu /> */}
-
+          <AdminMenu />
           <table className="w-full md:w-4/5 mx-auto">
             <thead>
               <tr>
