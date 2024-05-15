@@ -7,9 +7,8 @@ import { Product } from "./Produccts/Product";
 
 export const Home = () => {
   const { keyword } = useParams();
-  console.log("key", keyword);
   const { data, isLoading, isError } = useGetProductsQuery({ keyword });
-  console.log("id",isError);
+  
   return (
     <>
       <div>

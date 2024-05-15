@@ -39,8 +39,6 @@ export const ProductList = () => {
     }
   };
 
-  console.log("first", imageUrl);
-  console.log(typeof imageUrl);
   const handleSubmit = async (e) => {
     e.preventDefault();
 

@@ -5,7 +5,6 @@ import  ProductCarousel  from "../pages/Produccts/ProductCarousel";
 
 export const Header = () => {
   const { data, isLoading, error } = useGetTopProductQuery();
-  console.log(data);
 
   if (isLoading) {
     return <Loader />;

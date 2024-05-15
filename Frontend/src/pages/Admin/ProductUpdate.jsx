@@ -52,7 +52,6 @@ export const ProductUpdate = () => {
       setStock(productData?.data.countInStock);
     }
   }, [productData]);
-  console.log("image", image);
 
   const handleFileUpload = async (e) => {
     const formData = new FormData();

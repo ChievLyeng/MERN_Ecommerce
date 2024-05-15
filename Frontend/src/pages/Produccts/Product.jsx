@@ -8,7 +8,7 @@ export const Product = ({ product }) => {
         <img
           src={product.image}
           alt={product.name}
-          className="w-[30rem] rounded"
+          className=" rounded aspect-square"
         />
         <HeartIcon product={product} />
       </div>
@@ -22,6 +22,7 @@ export const Product = ({ product }) => {
           </h2>
         </Link>
       </div>
+      
     </div>
   );
 };
